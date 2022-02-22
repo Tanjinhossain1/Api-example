@@ -9,12 +9,24 @@ const uiInterphase = (addData) =>{
     addData.forEach(country => {
         const div = document.createElement('div');
         div.classList.add('styles')
-        const h3 = document.createElement('h3');
-        const p = document.createElement('p');
-        h3.innerText = country.name.common;
-        p.innerText = country.capital;
-        div.appendChild(h3);
-        div.appendChild(p);
+        div.innerHTML = `
+        <h3>${country.name.common}</h3>
+        <p>${country.capital}</p>
+        <button onclick="loadCountryes('${country.name.common}')" >Details</button>`
         container.appendChild(div);
     });
+}
+const loadCountryes = name =>{
+    const url = `https://restcountries.com/v3.1/name/${name}`
+  fetch(url)
+  .then(res => res.json())
+  .then(data => uiCountry(data[0]))
+}
+
+const uiCountry = dataAdd =>{
+    const addCountry = document.getElementById('add-country');
+    addCountry.innerHTML = `
+   <h2> ${dataAdd.name.common}</h2>
+    <img src="${dataAdd.flags.png}">
+    `
 }
